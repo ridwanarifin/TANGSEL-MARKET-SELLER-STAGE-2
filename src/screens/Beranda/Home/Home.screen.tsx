@@ -61,7 +61,44 @@ export default function HomeScreen(props : Prop) {
 
       <Paper.Card style={styles._actions_container}>
         <Paper.Card.Content>
-          {_.map(actions, _renderAction)}
+          {/* {_.map(actions, (item, index) _renderAction(item, index))} */}
+          <Paper.Surface style={[styles._action_list, { backgroundColor: colors.background }]}>
+            <Paper.List.Item
+              style={{borderRadius: 16}}
+              title="Saldo Saya"
+              right={() =>
+                <Paper.List.Icon icon="chevron-right" />
+              }
+              borderless
+              titleStyle={styles._action_title}
+            />
+          </Paper.Surface>
+
+          <Paper.Surface style={[styles._action_list, { backgroundColor: colors.background }]}>
+            <Paper.List.Item
+              style={{borderRadius: 16}}
+              title="Penilaian Toko"
+              onPress={() => props.navigation.navigate('KategoriScreen')}
+              right={() =>
+                <Paper.List.Icon icon="chevron-right" />
+              }
+              borderless
+              titleStyle={styles._action_title}
+            />
+          </Paper.Surface>
+
+          <Paper.Surface style={[styles._action_list, { backgroundColor: colors.background }]}>
+            <Paper.List.Item
+              style={{borderRadius: 16}}
+              title="Jasa Kirim Saya"
+              onPress={() => props.navigation.navigate('JasaKirimModal')}
+              right={() =>
+                <Paper.List.Icon icon="chevron-right" />
+              }
+              borderless
+              titleStyle={styles._action_title}
+            />
+          </Paper.Surface>
         </Paper.Card.Content>
         <Paper.Card.Actions style={styles._action_button_container}>
           <Paper.Button
@@ -87,24 +124,6 @@ export default function HomeScreen(props : Prop) {
       />
     </SafeAreaView>
   )
-
-  function _renderAction (item: string, index: number) {
-    if (!item) { return }
-    return (
-      <Paper.Surface key={index} style={[styles._action_list, { backgroundColor: colors.background }]}>
-        <Paper.List.Item
-          style={{borderRadius: 16}}
-          title={item}
-          onPress={() => props.navigation.navigate('JasaKirimScreen')}
-          right={() =>
-            <Paper.List.Icon icon="chevron-right" />
-          }
-          borderless
-          titleStyle={styles._action_title}
-        />
-      </Paper.Surface>
-    )
-  }
 };
 
 const DATA_PRODUCT = [{

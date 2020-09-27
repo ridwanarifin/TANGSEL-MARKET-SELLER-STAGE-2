@@ -41,7 +41,7 @@ const shopSlice = createSlice({
       state.jasa_kirim!.pengiriman_dalam_tangsel = action.payload
     },
     setJasaKirimLuarTangsel (state, action) {
-      state.jasa_kirim!.pengiriman_dalam_tangsel = action.payload
+      state.jasa_kirim!.pengiriman_luar_tangsel = action.payload
     },
     setShopBiodata (state, action: PayloadAction<{avatar?: string, name?: string, email?: string, phone?: string}>) {
       state.avatar  = action.payload?.avatar

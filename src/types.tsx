@@ -5,28 +5,13 @@ export type RootStackParamList = {
   Auth: undefined;
   Root: undefined;
   NotFound: undefined;
+  JasaKirimModal: any;
 };
 
 export type BottomTabParamList = {
   Beranda: undefined;
   Pesanan: any;
 };
-
-export type HomeStackParamList = {
-  HomeScreen: undefined
-  JasaKirimScreen: undefined
-  JasaKirimDetilScreen: {
-    title: string
-    data?: Array<string>
-  }
-  KategoriScreen: undefined
-
-  DetilScreen: any
-};
-
-export type PesananStackParamList = {
-  PesananMasukScreen: any
-}
 
 export type AuthParamList = {
   LoginScreen: undefined
@@ -35,6 +20,23 @@ export type AuthParamList = {
     fullname?: string
     nik?: string
   } | undefined
+}
+
+export type HomeStackParamList = {
+  HomeScreen: any
+  KategoriScreen: undefined
+
+  DetilScreen: any
+};
+
+export type PesananStackParamList = {
+  PesananMasukScreen: any
+  DetilPesananScreen: any
+}
+
+export type JasaKirimModalParamList = {
+  JasaKirimModalScreen: any
+  JasaKirimModalDetilScreen: any
 }
 
 /**
@@ -59,14 +61,28 @@ export type BiodataSignUpScreenNavigationProp = StackNavigationProp<AuthParamLis
  *
  *  DetilScreen
  */
-export type HomeScreenRouteProp                 = RouteProp<HomeStackParamList, 'HomeScreen'>;
-export type HomeScreenNavigationProp            = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
-
-export type JasaKirimScreenRouteProp            = RouteProp<HomeStackParamList, 'JasaKirimScreen'>;
-export type JasaKirimNavigationProp             = StackNavigationProp<HomeStackParamList, 'JasaKirimScreen'>;
-
-export type JasaKirimDetilScreenRouteProp       = RouteProp<HomeStackParamList, 'JasaKirimDetilScreen'>;
-export type JasaKirimDetilScreenNavigationProp  = StackNavigationProp<HomeStackParamList, 'JasaKirimDetilScreen'>;
+export type HomeScreenRouteProp                 = RouteProp<HomeStackParamList, 'HomeScreen'> & JasaKirimModalRouteProp;
+export type HomeScreenNavigationProp            = StackNavigationProp<HomeStackParamList, 'HomeScreen'> & JasaKirimModalNavigationProp;
 
 export type DetilScreenRouteProp                = RouteProp<HomeStackParamList, 'DetilScreen'>;
 export type DetilScreenNavigationProp           = StackNavigationProp<HomeStackParamList, 'DetilScreen'>;
+
+
+/**
+ * Pesanan Type Route & Navigation
+ *  PesananMasuk
+ *  DetilPesanan
+ */
+export type PesananMasukScreenRouteProp         = RouteProp<PesananStackParamList, 'PesananMasukScreen'>;
+export type PesananMasukScreenNavigationProp    = StackNavigationProp<PesananStackParamList, 'PesananMasukScreen'>;
+
+export type DetilPemesananScreenRouteProp       = RouteProp<PesananStackParamList, 'DetilPesananScreen'>;
+export type DetilPemesananScreenNavigationProp  = StackNavigationProp<PesananStackParamList, 'DetilPesananScreen'> & JasaKirimModalNavigationProp;
+
+
+/**
+ * JasaKirimModal Type Route & Navigation
+ *  JasaKirim
+ */
+export type JasaKirimModalRouteProp = RouteProp<JasaKirimModalParamList & RootStackParamList, 'JasaKirimModal'>;
+export type JasaKirimModalNavigationProp = StackNavigationProp<JasaKirimModalParamList & RootStackParamList, 'JasaKirimModal'>;

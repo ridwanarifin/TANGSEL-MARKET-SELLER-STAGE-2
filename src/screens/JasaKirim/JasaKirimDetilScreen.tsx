@@ -3,16 +3,16 @@ import * as RN from 'react-native';
 import * as Paper from 'react-native-paper';
 import _ from 'lodash';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { JasaKirimDetilScreenRouteProp, JasaKirimDetilScreenNavigationProp } from '../../../types';
+import { JasaKirimModalRouteProp, JasaKirimModalNavigationProp } from '../../types';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { setJasaKirimDalamTangsel, setJasaKirimLuarTangsel, JasaKirim } from '../../../redux/shopSlice';
-import { RootState } from '../../../redux/rootReducer';
+import { setJasaKirimDalamTangsel, setJasaKirimLuarTangsel, JasaKirim } from '../../redux/shopSlice';
+import { RootState } from '../../redux/rootReducer';
 import { useTheme } from '@react-navigation/native';
-import layout from '../../../constants/Layout';
+import layout from '../../constants/Layout';
 
 type Prop = {
-  route: JasaKirimDetilScreenRouteProp
-  navigation: JasaKirimDetilScreenNavigationProp
+  route: JasaKirimModalRouteProp
+  navigation: JasaKirimModalNavigationProp
 }
 
 export default function JasaKirimDetilScreen (props: Prop) {
@@ -49,7 +49,7 @@ export default function JasaKirimDetilScreen (props: Prop) {
   const [selected, setSelected] = React.useState<string>(initValueJasaKirim());
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{paddingTop: 15}}>
       <RN.FlatList
         contentContainerStyle={styles.contentContainer}
         keyExtractor={(item) => item}

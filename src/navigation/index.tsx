@@ -8,6 +8,7 @@ import BottomTabNavigator from './Tab/BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import AuthStackNavigator from './Stack/AuthStackNavigator';
+import JasaKirimStackNavigator from './Stack/JasaKirimStackNavigator';
 
 enableScreens();
 
@@ -24,9 +25,14 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Auth" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Auth" component={AuthStackNavigator} />
-      <Stack.Screen name="Root" component={BottomTabNavigator} />
+    <Stack.Navigator initialRouteName="Root">
+      <Stack.Screen name="Auth" component={AuthStackNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="JasaKirimModal"
+        component={JasaKirimStackNavigator}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>
   );
