@@ -7,6 +7,9 @@ import useColorScheme from '../../hooks/useColorScheme';
 import { BottomTabParamList } from '../../types';
 import TabBerandaStackNavigator from '../Stack/TabBerandaStackNavigator';
 import TabPesananStackNavigator from '../Stack/TabPesananStackNavigator';
+import TabNotifikasiStackNavigator from '../Stack/TabNotifikasiStackNavigator';
+import TabChatStackNavigator from '../Stack/TabChatStackNavigator'
+import TabAccountStackNavigator from '../Stack/TabAccountStackNavigator'
 
 
 
@@ -31,6 +34,27 @@ export default function BottomTabNavigator() {
         component={TabPesananStackNavigator}
         options={{
           tabBarIcon: ({ color }) => TabBarIcon({ name: "clipboard-outline", color: color })
+        }}
+      />
+      <BottomTab.Screen
+        name="Notifikasi"
+        component={TabNotifikasiStackNavigator}
+        options={{
+          tabBarIcon: ({ color }) => TabBarIcon({ name: "bell-ring-outline", color: color })
+        }}
+      />
+      <BottomTab.Screen
+        name="Chat"
+        component={TabChatStackNavigator}
+        options={{
+          tabBarIcon: ({ color }) => TabBarIcon({ name: "chat-outline", color: color })
+        }}
+      />
+      <BottomTab.Screen
+        name="Account"
+        component={TabAccountStackNavigator}
+        options={{
+          tabBarIcon: ({ color }) => TabBarIcon({ name: "account-circle-outline", color: color })
         }}
       />
     </BottomTab.Navigator>

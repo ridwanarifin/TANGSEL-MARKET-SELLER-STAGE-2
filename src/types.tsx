@@ -10,6 +10,9 @@ export type RootStackParamList = {
 export type BottomTabParamList = {
   Beranda: undefined;
   Pesanan: any;
+  Notifikasi: any;
+  Chat: any;
+  Account: any;
 };
 
 export type HomeStackParamList = {
