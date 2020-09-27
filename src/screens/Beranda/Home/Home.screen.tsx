@@ -78,7 +78,6 @@ export default function HomeScreen(props : Prop) {
             <Paper.List.Item
               style={{borderRadius: 16}}
               title="Penilaian Toko"
-              onPress={() => props.navigation.navigate('KategoriScreen')}
               right={() =>
                 <Paper.List.Icon icon="chevron-right" />
               }
@@ -103,10 +102,10 @@ export default function HomeScreen(props : Prop) {
         <Paper.Card.Actions style={styles._action_button_container}>
           <Paper.Button
             mode="contained"
+            color={colors.link}
             style={styles._action_button}
             labelStyle={{textTransform: 'capitalize'}}
-            // onPress={() => props.navigation.navigate('KategoriScreen')}
-            onPress={() => console.log('pressed')}
+            onPress={() => props.navigation.navigate('KategoriScreen')}
           >
             Tambah Produk
           </Paper.Button>
@@ -136,7 +135,7 @@ const DATA_PRODUCT = [{
       "https://ecs7.tokopedia.net/img/cache/700/product-1/2018/9/4/35734172/35734172_2baeece8-bd76-4aab-9a8b-817374dd83a8_1536_1536.jpeg",
     ],
     discount: 10,
-    price: 3250000,
+    price: 325000,
     reviews: 5,
     specs: {
       kategori: 'Kategori',
@@ -147,16 +146,54 @@ const DATA_PRODUCT = [{
     descriptions: 'Kaos Polos cotton combed 20s standar distro, bahan cotton combed 20s standar distro yang halus dan lembut. Tanpa merek, cocok untuk sablon DTG, digital, atau manual, ready stock dan siap kirim gojek wilayah jakarta. Tersedia ukuran S sampai XXXL.',
   },{
     id: 1,
-    name: 'T-shirt Putih / Katun / Size M',
+    name: 'Kamera',
     rating: 4,
     images: [
-      "https://ecs7.tokopedia.net/img/cache/700/product-1/2018/9/4/35734172/35734172_2baeece8-bd76-4aab-9a8b-817374dd83a8_1536_1536.jpeg",
-      "https://ecs7.tokopedia.net/img/cache/700/product-1/2018/9/4/35734172/35734172_2baeece8-bd76-4aab-9a8b-817374dd83a8_1536_1536.jpeg",
-      "https://ecs7.tokopedia.net/img/cache/700/product-1/2018/9/4/35734172/35734172_2baeece8-bd76-4aab-9a8b-817374dd83a8_1536_1536.jpeg",
+      "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2020/03/Blog_Rekomendasi-Kamera-Mirrorless-Canon-Terbaik-Terfavorit-696x360.jpg",
+      "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2020/03/Blog_Rekomendasi-Kamera-Mirrorless-Canon-Terbaik-Terfavorit-696x360.jpg",
+      "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2020/03/Blog_Rekomendasi-Kamera-Mirrorless-Canon-Terbaik-Terfavorit-696x360.jpg",
     ],
     discount: 10,
     price: 3250000,
     reviews: 10,
+    specs: {
+      kategori: 'Elektronik/Kamera',
+      weight: '',
+      type: '',
+      size: ''
+    },
+    descriptions: 'Kamera mirrorless memiliki bodi yang lebih kecil dari kamera digital single-lens reflex (DSLR). Bentuk bodi yang compact memberikan keuntungan bagi pengguna yang mengutamakan mobilitas dengan ukuran kamera yang lebih ringan.',
+  },{
+    id: 2,
+    name: 'Kemeja Coklat',
+    rating: 4,
+    images: [
+      "https://cf.shopee.co.id/file/8c81a497b92d4c5908fdc2185cb59ae3",
+      "https://cf.shopee.co.id/file/8c81a497b92d4c5908fdc2185cb59ae3",
+      "https://cf.shopee.co.id/file/8c81a497b92d4c5908fdc2185cb59ae3",
+    ],
+    discount: 0,
+    price: 200000,
+    reviews: 10,
+    specs: {
+      kategori: 'Pakaian Pria',
+      weight: '',
+      type: '',
+      size: ''
+    },
+    descriptions: 'Kamera mirrorless memiliki bodi yang lebih kecil dari kamera digital single-lens reflex (DSLR). Bentuk bodi yang compact memberikan keuntungan bagi pengguna yang mengutamakan mobilitas dengan ukuran kamera yang lebih ringan.',
+  },{
+    id: 0,
+    name: 'T-sirt',
+    rating: 4,
+    images: [
+      "https://www.asket.com/img/width=750,format=webp,quality=70/https://asket.centracdn.net/client/dynamic/images/2_91cd261056-asket_tee_white_slide_01-original.jpg",
+      "https://www.asket.com/img/width=750,format=webp,quality=70/https://asket.centracdn.net/client/dynamic/images/2_91cd261056-asket_tee_white_slide_01-original.jpg",
+      "https://www.asket.com/img/width=750,format=webp,quality=70/https://asket.centracdn.net/client/dynamic/images/2_91cd261056-asket_tee_white_slide_01-original.jpg",
+    ],
+    discount: 5,
+    price: 150000,
+    reviews: 5,
     specs: {
       kategori: 'Kategori',
       weight: '250 gram',
@@ -164,7 +201,8 @@ const DATA_PRODUCT = [{
       size: 'M (m)'
     },
     descriptions: 'Kaos Polos cotton combed 20s standar distro, bahan cotton combed 20s standar distro yang halus dan lembut. Tanpa merek, cocok untuk sablon DTG, digital, atau manual, ready stock dan siap kirim gojek wilayah jakarta. Tersedia ukuran S sampai XXXL.',
-}]
+  }
+]
 
 const { window } = layout;
 const styles = RN.StyleSheet.create({
@@ -198,6 +236,7 @@ const styles = RN.StyleSheet.create({
     fontFamily: 'roboto-medium',
     fontSize: 18,
     borderRadius: 32,
+    height: 40,
     paddingLeft: 20,
     paddingRight: 20
   }

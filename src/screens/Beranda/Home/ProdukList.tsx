@@ -11,6 +11,7 @@ export default function ProdukList(props: RN.FlatListProperties<any>) {
       keyExtractor={(item, index) => index.toString()}
       numColumns={2}
       columnWrapperStyle={[styles.columnWrapper, {backgroundColor: colors.surface}]}
+      ItemSeparatorComponent={() => <Paper.Divider style={{marginVertical: 5}} />}
     />
   );
 };
@@ -20,5 +21,6 @@ const styles = RN.StyleSheet.create({
     // flexGrow: 1,
     justifyContent: "space-between",
     paddingHorizontal: 10,
+    paddingVertical: 10
   },
 })

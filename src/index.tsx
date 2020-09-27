@@ -83,7 +83,6 @@ export default function index() {
         if (Platform.OS !== 'web' && initialUrl == null) {
           const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
           const state = savedStateString ? JSON.parse(savedStateString) : undefined;
-          console.log(state)
 
           if (state !== undefined) {
             setInitialState(state);

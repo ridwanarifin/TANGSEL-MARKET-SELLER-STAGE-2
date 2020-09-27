@@ -26,24 +26,18 @@ const DetilScreen: React.FC<DetilProp> =
   const inset = useSafeArea();
   const { fonts } = Paper.useTheme();
   const { params } = props.route
-  const _renderItem = ({item, index}) => {
-    return (
-        <RN.View>
-            <Paper.Text>{ item?.title }</Paper.Text>
-        </RN.View>
-    );
-  }
   return (
     <SafeAreaView>
       <ScrollView>
-        <Paper.Text>{JSON.stringify(params)}</Paper.Text>
         <RN.View>
-          <Paper.Surface style={{paddingTop: 16, paddingBottom: 23, paddingHorizontal: 15, marginBottom: 4}}>
+          <Paper.Surface style={{paddingTop: 16, paddingBottom: 23, marginBottom: 4}}>
             <Carousel
               data={params?.images}
             />
-            <Paper.Title>{params?.name}</Paper.Title>
-            <PriceDiscount price={params?.price} discount={params?.discount} />
+            <RN.View style={{paddingHorizontal: 15}}>
+              <Paper.Title>{params?.name}</Paper.Title>
+              <PriceDiscount price={params?.price} discount={params?.discount} />
+            </RN.View>
           </Paper.Surface>
 
           <Paper.Surface style={{paddingHorizontal: 15, paddingVertical: 17, marginHorizontal: 4}}>

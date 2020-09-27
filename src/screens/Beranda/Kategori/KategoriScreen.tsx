@@ -5,47 +5,44 @@ import _ from 'lodash';
 import ErrorBoundary from 'react-native-error-boundary';
 import { Asset } from 'expo-asset';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CardAnimationContext } from '@react-navigation/stack';
+import { ScrollView } from 'react-native-gesture-handler';
 import { SvgUri } from 'react-native-svg';
+import Collapsible from 'react-native-collapsible';
+import { CardAnimationContext } from '@react-navigation/stack';
 
 import KategoriList from './KategoriList';
 import KategoriItem from './KategoriItem';
 import Fallback from '../../../helper/Fallback';
 import Colors from '../../../constants/Colors';
 import Layout from '../../../constants/Layout';
-import { ScrollView } from 'react-native-gesture-handler';
 
 export default function KategoriScreen () {
   const { colors } = Paper.useTheme();
   return (
     <SafeAreaView style={[styles.container]}>
-    {/* <CardAnimationContext.Consumer>
-      {value => ( */}
-        <ScrollView>
-          {_.map(DATA_KATEGORI, (data, idx: number) => (
-            <Paper.List.Accordion
-              key={idx}
-              theme={{colors: {primary: colors.link}}}
-              title={data.title}
-              titleStyle={{textTransform: "capitalize"}}
-              description="description">
+      <ScrollView>
+        {_.map(DATA_KATEGORI, (data, idx: number) => (
+          <Paper.List.Accordion
+            key={idx}
+            theme={{colors: {primary: colors.link}}}
+            title={data.title}
+            titleStyle={{textTransform: "capitalize"}}
+            description="description">
 
-              <ErrorBoundary FallbackComponent={Fallback}>
-                <RN.View style={styles.containerIcon}>
-                  {_.map(data.data, (item, index) =>
-                    <Item key={index}
-                      title={item}
-                      index={index}
-                      section={data.title}
-                    />
-                  )}
-                </RN.View>
-              </ErrorBoundary>
-            </Paper.List.Accordion>
-          ))}
-        </ScrollView>
-      {/* )}
-    </CardAnimationContext.Consumer> */}
+            <ErrorBoundary FallbackComponent={Fallback}>
+              <RN.View style={styles.containerIcon}>
+                {_.map(data.data, (item, index) =>
+                  <Item key={index}
+                    title={item}
+                    index={index}
+                    section={data.title}
+                  />
+                )}
+              </RN.View>
+            </ErrorBoundary>
+          </Paper.List.Accordion>
+        ))}
+      </ScrollView>
     </SafeAreaView>
   )
 };
