@@ -10,7 +10,34 @@ export default React.memo(
     <Paper.TextInput
       {...props}
       mode="flat"
-      clearButtonMode="while-editing"
+      style={{ backgroundColor: props.theme.colors.surface }}
+      clearButtonMode="always"
     />
   )
 }), (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
+
+
+interface InputProps extends TextInputProps {
+  label?: string;
+  errors?: Record<string, Object>;
+  name?: string;
+}
+export const InputForrward = React.forwardRef<any, InputProps>(
+  (props, ref): React.ReactElement => {
+    const {label, errors, name, ...inputProps} = props;
+
+    return (
+      <RN.View>
+        {/* {label && <Text>{label}</Text>} */}
+        <Paper.TextInput
+          key={name}
+          autoCapitalize="none"
+          ref={ref}
+          onChangeText={(value) => inputProps.onChangeText(value)}
+          {...inputProps}
+        />
+        {errors?.message && <Paper.HelperText type="error">{errors?.message}</Paper.HelperText>}
+      </RN.View>
+    );
+  },
+);

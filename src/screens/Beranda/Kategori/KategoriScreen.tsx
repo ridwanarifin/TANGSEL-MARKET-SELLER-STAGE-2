@@ -5,7 +5,7 @@ import _ from 'lodash';
 import ErrorBoundary from 'react-native-error-boundary';
 import { Asset } from 'expo-asset';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, FlatList } from 'react-native-gesture-handler';
 import { SvgUri } from 'react-native-svg';
 import Collapsible from 'react-native-collapsible';
 import { CardAnimationContext } from '@react-navigation/stack';
@@ -15,34 +15,45 @@ import KategoriItem from './KategoriItem';
 import Fallback from '../../../helper/Fallback';
 import Colors from '../../../constants/Colors';
 import Layout from '../../../constants/Layout';
+import { KategoriScreenRouteProp, KategoriScreenNavigationProp } from '../../../types';
 
-export default function KategoriScreen () {
+type KategoriScreenProp = {
+  route?: KategoriScreenRouteProp
+  navigation?: KategoriScreenNavigationProp
+}
+
+export default function KategoriScreen (props: KategoriScreenProp) {
   const { colors } = Paper.useTheme();
   return (
     <SafeAreaView style={[styles.container]}>
-      <ScrollView>
-        {_.map(DATA_KATEGORI, (data, idx: number) => (
+      <FlatList
+        data={DATA_KATEGORI}
+        keyExtractor={(item, index) => index.toString()}
+        ItemSeparatorComponent={() =>
+          <Paper.Divider
+            style={{height: 1, marginHorizontal: 16, backgroundColor: Colors.light.whiteTer}} />
+        }
+        renderItem={({ item }) => (
           <Paper.List.Accordion
-            key={idx}
-            theme={{colors: {primary: colors.link}}}
-            title={data.title}
-            titleStyle={{textTransform: "capitalize"}}
-            description="description">
-
+            theme={{colors: {primary: Colors.light.link}}}
+            title={item.title}
+            titleStyle={{textTransform: "capitalize"}}>
+            <Paper.Divider style={{height: 1, marginHorizontal: 16, backgroundColor: Colors.light.whiteTer}} />
             <ErrorBoundary FallbackComponent={Fallback}>
               <RN.View style={styles.containerIcon}>
-                {_.map(data.data, (item, index) =>
+                {_.map(item.data, (d, index) =>
                   <Item key={index}
-                    title={item}
+                    title={d}
                     index={index}
-                    section={data.title}
+                    section={item.title}
+                    onPress={() => props.navigation.push('TambahProdukScreen', { kategori_produk: d })}
                   />
                 )}
               </RN.View>
             </ErrorBoundary>
           </Paper.List.Accordion>
-        ))}
-      </ScrollView>
+        )}
+      />
     </SafeAreaView>
   )
 };
@@ -57,58 +68,62 @@ const styles = RN.StyleSheet.create({
       flexDirection: "row",
       justifyContent: "flex-start",
       alignItems: "flex-start",
-      // paddingRight: 25,
-      paddingLeft: "10%",
+      paddingHorizontal: 0,
       paddingTop: 10,
-      paddingBottom: 10,
-      backgroundColor: "rgba(219, 219, 219, 0.3)",
+      paddingBottom: 10
   },
   iconItem: {
-      // borderWidth: 1,
       borderRadius: 16,
       borderColor: Colors.light.greyLighter,
       width: 52,
       height: 52,
       justifyContent: "center",
       alignItems: "center",
-      elevation: 5
+      backgroundColor: Colors.light.whiteTer
   },
   containerIconitem: {
       alignItems: "center",
       justifyContent: "center",
       paddingTop: 10,
       paddingBottom: 10,
-      // borderWidth: 1,
+      marginHorizontal: 10
   },
   title: {
       marginTop: 5,
       textTransform: "capitalize",
       flexWrap: "wrap",
-      textAlign: "center"
+      textAlign: "center",
+      fontSize: 12
   }
 });
 
-type ItemProps = {title: string; index: number; section: any};
+type ItemProps = {
+  title?: string
+  index: number
+  section: any
+  onPress?: ((event: RN.GestureResponderEvent) => void) & ((e: RN.GestureResponderEvent) => void)
+};
 const Item = React.memo<(props: ItemProps) => JSX.Element>(
   (props): JSX.Element => {
     let URI: any = switchIconUriByName(props.section, props.title);
     return (
+
+      <Paper.TouchableRipple borderless onPress={props.onPress}>
       <RN.View
           key={props.index}
           style={[styles.containerIconitem, {
               width: Layout.window.width / 4 - 20,
           }]}>
           <Paper.Surface style={styles.iconItem}>
-              <Paper.TouchableRipple onPress={() => alert(props.title)}>
-                  <SvgUri
-                      width="28"
-                      height="28"
-                      uri={Asset.fromModule(URI).uri}
-                  />
-              </Paper.TouchableRipple>
+            <SvgUri
+              width="28"
+              height="28"
+              uri={Asset.fromModule(URI).uri}
+            />
           </Paper.Surface>
           <Paper.Text style={styles.title}>{props.title}</Paper.Text>
       </RN.View>
+      </Paper.TouchableRipple>
     );
   },
   (prev, next) => _.isEqual(prev, next)

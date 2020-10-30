@@ -7,12 +7,19 @@ import { ErrorMessage } from '@hookform/error-message';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-community/async-storage';
 
-import baseStyle from '../../../styles';
-import { SignUpScreenRouteProp, SignUpScreenNavigationProp } from '../../../types';
-import InputField from '../../../components/InputField';
-import { setProfilSignUp } from '../../../redux/profileSlice';
-import { useDispatch } from 'react-redux';
+import baseStyle from '../../styles';
+import { SignUpScreenRouteProp, SignUpScreenNavigationProp } from '../../types';
+import InputField from '../../components/InputField';
+import { setProfilSignUp } from '../../redux/profileSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetAuth } from '../../redux/authSlice';
+import { getAsyncAuth } from '../../api/get';
+import { deleteUserLogout } from '../../api/delete';
+import { useAppDispatch } from '../../redux/store';
+import { RootState } from '../../redux/rootReducer';
 
 type SignUpProp = {
   route?: SignUpScreenRouteProp
@@ -30,39 +37,32 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 
 const SignUpScreen: React.FC<SignUpProp> =
 (props): JSX.Element => {
-  const [email, setEmail]       = React.useState<string | undefined>(undefined);
-  const [nik, setNik]           = React.useState<string | number |undefined>(undefined);
-  const [fullname, setFullname] = React.useState<string | undefined>(undefined);
-  const [password, setPassword] = React.useState<string | undefined>(undefined);
-  const [rePassword, setRePassword] = React.useState<string | undefined>(undefined);
   const [tcChecked, setTcChecked] = React.useState(false);
-  const [disabledBtn, setDisabledBtn] = React.useState(true);
+  const dispatch = useAppDispatch();
+  const auth = useSelector((state: RootState) => state.auth);
+  const user = useSelector((state: RootState) => state.user);
 
-  const { errors, control, handleSubmit, register, watch } = useForm({
-    defaultValues: {
-      email: "", nik: "", fullname: "", password: "", rePassword: ""
-    }
-  });
-  const dispatch            = useDispatch();
-  const inputRefemail       = React.useRef(null);
-  const inputRefnik         = React.useRef(null);
-  const inputReffullname    = React.useRef(null);
-  const inputRefpassword    = React.useRef(null);
-  const inputRefrePassword  = React.useRef(null);
+  const {
+      handleSubmit,
+      control,
+      errors,
+      watch
+    } = useForm({
+      defaultValues: {
+        email: "", nik: "", fullname: "", password: "", rePassword: ""
+      }
+    });
+
   const _onSubmit = (formData: DataFormType) => {
     console.log('formData', formData);
     const { fullname, nik } = formData;
     if (!Object.keys(errors).length && formData && tcChecked) {
-      console.log('form ok');
       dispatch(setProfilSignUp({ email: formData.email, nik: formData.nik, name: formData.fullname, password: formData.password }))
       props.navigation.navigate('BiodataSignUpScreen', { fullname, nik })
     }
   }
   console.log('errors', errors)
-
   const { colors, fonts } = Paper.useTheme();
-  const value = React.useMemo(() => (context) => context, []);
-  const onChange = React.useCallback((text, context) => context(text), []);
 
   return (
     <SafeAreaView style={baseStyle.container}>
@@ -90,6 +90,8 @@ const SignUpScreen: React.FC<SignUpProp> =
                     label="Email"
                     keyboardType="email-address"
                     autoCapitalize="none"
+                    returnKeyType="next"
+                    clearTextOnFocus
                     dense
                   />
                   {errors.email && <Paper.HelperText type="error"> {errors.email.message} </Paper.HelperText>}
@@ -111,8 +113,7 @@ const SignUpScreen: React.FC<SignUpProp> =
                 pattern: {
                   value: /^\d/,
                   message: 'This input is number only.',
-                },
-                // validate: val => typeof(parseInt(val)) === 'number' || "This input is number only."
+                }
               }}
               render={(params) => (
                 <React.Fragment>
@@ -122,6 +123,7 @@ const SignUpScreen: React.FC<SignUpProp> =
                     onChangeText={text => params.onChange(text)}
                     label="NIK Tangerang Selatan"
                     keyboardType="decimal-pad"
+                    right={() => <MaterialCommunityIcons name="check" />}
                     dense
                   />
                   {errors.nik && <Paper.HelperText type="error"> {errors.nik.message} </Paper.HelperText>}
@@ -178,10 +180,6 @@ const SignUpScreen: React.FC<SignUpProp> =
               control={control}
               rules={{
                 required: "This is required.",
-                // pattern: {
-                //   value: watch('password'),
-                //   message: "Password mismatch"
-                // },
                 validate: (val) => val === watch('password') || "Password mismatch"
               }}
               render={(params) => (
@@ -208,7 +206,7 @@ const SignUpScreen: React.FC<SignUpProp> =
                 setTcChecked(!tcChecked);
               }}
             />
-            <RN.Text style={styles.terms_conditions}>
+            <Paper.Text style={styles.terms_conditions}>
               Dengan mendaftarkan akun ini berarti anda telah
               <Paper.Text
                 style={{color: colors.link }}
@@ -218,7 +216,7 @@ const SignUpScreen: React.FC<SignUpProp> =
                 style={{color: colors.link }}
                 children=" ketentuan"
               /> yang berlaku.
-            </RN.Text>
+            </Paper.Text>
           </RN.View>
 
           <Paper.Button
@@ -240,16 +238,39 @@ const SignUpScreen: React.FC<SignUpProp> =
               <Paper.Subheading style={{color: colors.textLink, ...fonts.medium }}  children=" Masuk Disini" />
             </Paper.TouchableRipple>
           </RN.View>
+
+          <Paper.Button onPress={async () => {
+            await getAsyncAuth()
+            .then(res => {
+              console.log(res, '===== async storage auth ======')
+            })
+            .catch(err => { console.log(err) })
+            await AsyncStorage.getItem('@user')
+            .then(res => {
+              console.log(res, '===== async storage user ====');
+              console.log(auth);
+              console.log(user);
+            })
+          }}>
+            get
+          </Paper.Button>
+          <Paper.Button onPress={() => {
+            AsyncStorage.clear();
+          }}>Clear asyncstorage</Paper.Button>
+          <Paper.Button onPress={() => {
+            deleteUserLogout(dispatch)
+          }}>Clear</Paper.Button>
         </RN.View>
       </KeyboardAwareScrollView>
     </SafeAreaView>
   )
 }
 
-export default React.memo(
-  SignUpScreen,
-  (prevProps, nextProps) => _.isEqual(prevProps, nextProps)
-);
+export default
+//  React.memo(
+  SignUpScreen
+//   (prevProps, nextProps) => _.isEqual(prevProps, nextProps)
+// );
 
 const styles = RN.StyleSheet.create({
   btn__daftar: {

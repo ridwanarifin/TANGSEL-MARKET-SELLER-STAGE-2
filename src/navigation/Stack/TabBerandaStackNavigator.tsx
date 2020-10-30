@@ -1,11 +1,11 @@
 import React from 'react'
-
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { HomeStackParamList } from '../../types';
 
-import HomeScreen from '../../screens/Beranda/Home/Home.screen';
+import HomeScreen from '../../screens/Beranda/Home/HomeScreen';
 import KategoriScreen from '../../screens/Beranda/Kategori/KategoriScreen';
 import DetilScreen from '../../screens/Beranda/Detil/DetilScreen';
+import TambahProdukScreen from '../../screens/Beranda/Produk/TambahProdukScreen';
 
 const TabBerandaStack = createNativeStackNavigator<HomeStackParamList>();
 export default function TabBerandaStackNavigator () {
@@ -16,6 +16,7 @@ export default function TabBerandaStackNavigator () {
         component={HomeScreen}
         options={{ headerTitle: 'Profil Toko' }}
       />
+
       <TabBerandaStack.Screen
         name="KategoriScreen"
         component={KategoriScreen}
@@ -26,6 +27,13 @@ export default function TabBerandaStackNavigator () {
         name="DetilScreen"
         component={DetilScreen}
         options={{ title: 'Detil' }}
+      />
+
+      <TabBerandaStack.Screen
+        name="TambahProdukScreen"
+        component={TambahProdukScreen}
+        options={{ title: 'Tambah Produk'}}
+        initialParams={{kategori_produk: "Kuliner"}}
       />
     </TabBerandaStack.Navigator>
   )

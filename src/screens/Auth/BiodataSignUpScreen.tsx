@@ -1,3 +1,5 @@
+/// <reference path="../../types.d.ts" />
+
 import * as React from 'react';
 import * as RN from 'react-native';
 import * as Paper from 'react-native-paper';
@@ -7,13 +9,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm, Controller } from "react-hook-form";
 
-import baseStyle from '../../../styles';
-import InputField from '../../../components/InputField';
-import { BiodataSignUpScreenRouteProp, BiodataSignUpScreenNavigationProp } from '../../../types';
+import baseStyle from '../../styles';
+import InputField from '../../components/InputField';
+import { BiodataSignUpScreenRouteProp, BiodataSignUpScreenNavigationProp } from '../../types';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import { setShopBiodata } from '../../../redux/shopSlice';
-import { setProfilNameBiodata } from '../../../redux/profileSlice';
-import { RootState } from '../../../redux/rootReducer';
+import { setShopBiodata } from '../../redux/shopSlice';
+import { setProfilNameBiodata } from '../../redux/profileSlice';
+import { RootState } from '../../redux/rootReducer';
 
 type BiodataProp = {
   route?: BiodataSignUpScreenRouteProp
@@ -111,7 +113,7 @@ const BiodataSignUpScreen: React.FC<BiodataProp> =
                 <React.Fragment>
                   <InputField
                     {...params}
-                    style={{ backgroundColor: colors.surface }}
+                      style={{ backgroundColor: colors.surface }}
                     label="Nama Pemilik Toko"
                     onChangeText={text => params.onChange(text)}
                   />
@@ -133,8 +135,10 @@ const BiodataSignUpScreen: React.FC<BiodataProp> =
                     style={{ backgroundColor: colors.surface }}
                     label="NIK Tangerang Selatan"
                     keyboardType="decimal-pad"
+                    editable={false}
                     onChangeText={text => params.onChange(text)}
                   />
+                  <Paper.HelperText style={{position: "absolute", fontSize: 10, right: 0}} type="info">[Tidak Dapat Diubah]</Paper.HelperText>
                   {errors["nik"] && <Paper.HelperText type="error"> {errors.nik.message} </Paper.HelperText>}
                 </React.Fragment>
               )}

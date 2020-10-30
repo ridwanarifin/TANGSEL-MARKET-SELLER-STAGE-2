@@ -1,9 +1,8 @@
+import * as React from 'react';
+import * as Paper from 'react-native-paper';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import * as React from 'react';
 
-import Colors from '../../constants/Colors';
-import useColorScheme from '../../hooks/useColorScheme';
 import { BottomTabParamList } from '../../types';
 import TabBerandaStackNavigator from '../Stack/TabBerandaStackNavigator';
 import TabPesananStackNavigator from '../Stack/TabPesananStackNavigator';
@@ -16,12 +15,14 @@ import TabAccountStackNavigator from '../Stack/TabAccountStackNavigator'
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
+  // const colorScheme = useColorScheme();
+  const { colors } = Paper.useTheme();
 
   return (
     <BottomTab.Navigator
       initialRouteName="Beranda"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      tabBarOptions={{ activeTintColor: colors.link }}
+      >
       <BottomTab.Screen
         name="Beranda"
         component={TabBerandaStackNavigator}
@@ -51,7 +52,7 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Account"
+        name="Akun"
         component={TabAccountStackNavigator}
         options={{
           tabBarIcon: ({ color }) => TabBarIcon({ name: "account-circle-outline", color: color })
@@ -61,8 +62,6 @@ export default function BottomTabNavigator() {
   );
 }
 
-// You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
 function TabBarIcon(props: { name: string; color: string }) {
   return <MaterialCommunityIcons size={30} style={{ marginBottom: -3 }} {...props} />;
 }

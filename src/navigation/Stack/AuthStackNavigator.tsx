@@ -1,12 +1,10 @@
 import * as React from 'react';
-import * as RN from 'react-native';
-import * as Paper from 'react-native-paper';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
 import { AuthParamList } from '../../types';
-import SignUpScreen from '../../screens/Beranda/Auth/SignUpScreen';
-import LoginScreen from '../../screens/Beranda/Auth/LoginScreen';
-import BiodataSignUpScreen from '../../screens/Beranda/Auth/BiodataSignUpScreen';
+import SignUpScreen from '../../screens/Auth/SignUpScreen';
+import LoginScreen from '../../screens/Auth/LoginScreen';
+import BiodataSignUpScreen from '../../screens/Auth/BiodataSignUpScreen';
 
 const AuthStack = createNativeStackNavigator<AuthParamList>()
 export default function AuthStackNavigator() {

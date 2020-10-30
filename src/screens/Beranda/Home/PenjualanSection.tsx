@@ -66,9 +66,7 @@ const Penjualan: React.FC<PenjualanType> = (props): JSX.Element => {
 export default React.memo(Penjualan, (prevProps, nextProps) => _.isEqual(prevProps, nextProps));
 
 const styles = RN.StyleSheet.create({
-    // penjualan
     _penjualan: {
-      // borderWidth: 1,
       flex: 1,
       marginTop: 35,
       paddingTop: 5,
@@ -81,7 +79,6 @@ const styles = RN.StyleSheet.create({
       flexWrap: 'wrap',
       marginTop: 15,
       paddingHorizontal: 5
-      // justifyContent: 'flex-start',
     },
     _penjualan_content_item_container: {
       backgroundColor: 'transparent',
@@ -90,8 +87,6 @@ const styles = RN.StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'flex-start',
       marginBottom: 34
-      // flex: 6,
-      // borderWidth: 1,
     },
     _penjualan_content_item: {
       width: 52,
@@ -99,7 +94,6 @@ const styles = RN.StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 16.9,
-      // elevation: 2,
     },
     _penjualan_content_item_title: {
       fontSize: 12,

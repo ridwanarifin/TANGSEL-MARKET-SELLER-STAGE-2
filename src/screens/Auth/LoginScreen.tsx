@@ -1,14 +1,22 @@
 import * as React from 'react';
 import * as RN from 'react-native';
 import * as Paper from 'react-native-paper';
+import Toast from 'react-native-simple-toast';
 import _ from 'lodash';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm, Controller } from "react-hook-form";
+import { useDispatch, useSelector } from 'react-redux';
 
-import InputField from '../../../components/InputField';
-import { LoginScreenNavigationProp, LoginScreenRouteProp } from '../../../types';
-import baseStyle from '../../../styles';
+import InputField from '../../components/InputField';
+import { LoginScreenNavigationProp, LoginScreenRouteProp } from '../../types';
+import baseStyle from '../../styles';
+
+import { RootState } from '../../redux/rootReducer';
+import { postLoginMarket, postLogin } from '../../api/post';
+import { getUserMe } from '../../api/get';
+import { setAuth, setIsLogged } from '../../redux/authSlice';
+import { setUser, setUserError } from '../../redux/userSlice';
 
 type LoginProp = {
   route?: LoginScreenRouteProp
@@ -16,36 +24,48 @@ type LoginProp = {
 }
 
 type DataFormType = {
-  email?: string
-  password?: string
+  email: string
+  password: string
 }
 const LoginScreen: React.FC<LoginProp> = (props): JSX.Element => {
-    const [email, setEmail]       = React.useState<string | undefined>(undefined);
-    const [password, setPassword] = React.useState<string | undefined>(undefined);
+    const dispatch = useDispatch();
+    const [isSubmiting, setSubmiting] = React.useState<boolean>(false);
+    const auth = useSelector((state: RootState) => state.auth);
+    const user = useSelector((state: RootState) => state.user);
+    const { colors, fonts } = Paper.useTheme();
 
     const { errors, control, handleSubmit, watch } = useForm({
       defaultValues: {
-        email: "", password: ""
+        email: "r.arifin123@gmail.com", password: "arifin123"
       }
     });
 
-    const _onSubmit = (formData: DataFormType) => {
-      console.log('formData', formData);
-      if (!Object.keys(errors).length && formData) {
-        props.navigation.navigate('Root')
+    const _onSubmit = async (formData: DataFormType) => {
+      setSubmiting(true);
+      try {
+        if (!_.keys(errors).length) {
+          // props.navigation.navigate('Root');
+          dispatch(postLoginMarket(formData));
+        }
+      } catch (error) {
+        Toast.show(`Faled to login. ${error}`)
+      } finally {
+        setSubmiting(false)
       }
-    }
-    console.log('errors', errors)
+    };
 
-    const value     = React.useMemo(() => (context) => context, []);
-    const onChange  = React.useCallback((text, context) => context(text), []);
-    const { colors, fonts } = Paper.useTheme();
+    React.useEffect(() => {
+      if (auth.access_token && !user.nik)
+        dispatch(getUserMe());
+    }, [auth.access_token]);
+
 
     return (
     <SafeAreaView style={baseStyle.container}>
       <KeyboardAwareScrollView>
         <RN.View>
           <Paper.Headline style={[styles.headline, {...fonts.medium}]}>Masuk</Paper.Headline>
+          <Paper.Divider style={{marginTop: 74}} />
           <RN.View style={styles.input_wrapper}>
             <Controller
               name="email"
@@ -109,7 +129,9 @@ const LoginScreen: React.FC<LoginProp> = (props): JSX.Element => {
             mode="contained"
             color={colors.link}
             uppercase
-            onPress={handleSubmit(_onSubmit)}>
+            onPress={handleSubmit(_onSubmit)}
+            disabled={isSubmiting}
+            loading={isSubmiting}>
             Masuk
           </Paper.Button>
 

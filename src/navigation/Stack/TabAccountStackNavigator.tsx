@@ -18,7 +18,7 @@ export default function TabAccountStackNavigator () {
       <TabAccountStack.Screen
         name="AccountScreen"
         component={Account}
-        options={{ title: "Account" }}
+        options={{ title: "Akun" }}
       />
       <TabAccountStack.Screen
         name="HelpCenter"

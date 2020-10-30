@@ -1,6 +1,4 @@
 // const tintColorLight = '#2f95dc';
-const tintColorLight = '#08A0E9';
-const tintColorDark = '#fff';
 export const white = '#FFFFFF';
 export const whiteTer = '#F5F5F5';
 export const whiteBis = '#FAFAFA';
@@ -27,6 +25,9 @@ export const orange = '#FB9400';
 export const blue = '#00D8FD';
 export const red = '#F77163';
 export const linearGradientColor = ['rgba(10, 10, 10, 0) 58.85%', 'rgba(0, 0, 0, 0.65) 100%'];
+
+const tintColorLight = link;
+const tintColorDark = '#fff';
 
 export default {
   light: {

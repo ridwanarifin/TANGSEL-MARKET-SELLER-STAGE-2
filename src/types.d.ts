@@ -26,6 +26,7 @@ declare global {
           backdrop: string;
           notification: string;
           link: string;
+          textLink: string,
       }
       interface ThemeAnimation {
           scale: number;

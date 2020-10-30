@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as RN from 'react-native';
 import * as Paper from 'react-native-paper';
 import _ from 'lodash';
-import Colors from '../constants/Colors';
 import { ScrollView } from 'react-native-gesture-handler';
 
 type P = {
@@ -24,6 +23,7 @@ const Fallback: React.FC<P> = ({
     error,
     resetError
 }): JSX.Element => {
+    const { colors } = Paper.useTheme();
     return (
         <Paper.Surface style={[styles.container, containerStyle]}>
             <Paper.Headline>Oops!</Paper.Headline>
@@ -40,7 +40,7 @@ const Fallback: React.FC<P> = ({
             </ScrollView>
             <Paper.Button
                 style={styles.button} 
-                color={Colors.link}
+                color={colors.link}
                 dark
                 mode="contained"
                 onPress={resetError}>

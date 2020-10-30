@@ -13,7 +13,7 @@ export type BottomTabParamList = {
   Pesanan: any;
   Notifikasi: any;
   Chat: any;
-  Account: any;
+  Akun: any;
 };
 
 export type AuthParamList = {
@@ -27,9 +27,11 @@ export type AuthParamList = {
 
 export type HomeStackParamList = {
   HomeScreen: any
-  KategoriScreen: undefined
-
+  KategoriScreen: any
   DetilScreen: any
+  TambahProdukScreen: {
+    kategori_produk?: string
+  }
 };
 
 export type PesananStackParamList = {
@@ -70,6 +72,11 @@ export type HomeScreenNavigationProp            = StackNavigationProp<HomeStackP
 export type DetilScreenRouteProp                = RouteProp<HomeStackParamList, 'DetilScreen'>;
 export type DetilScreenNavigationProp           = StackNavigationProp<HomeStackParamList, 'DetilScreen'>;
 
+export type KategoriScreenRouteProp             = RouteProp<HomeStackParamList, 'KategoriScreen'>;
+export type KategoriScreenNavigationProp        = StackNavigationProp<HomeStackParamList, 'KategoriScreen'>;
+
+export type TambahProdukScreenRouteProp         = RouteProp<HomeStackParamList, 'TambahProdukScreen'>;
+export type TambahProdukScreenNavigationProp    = StackNavigationProp<HomeStackParamList, 'TambahProdukScreen'>;
 
 /**
  * Pesanan Type Route & Navigation

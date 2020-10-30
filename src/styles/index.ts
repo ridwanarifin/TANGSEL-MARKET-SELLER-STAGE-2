@@ -7,6 +7,6 @@ export default RN.StyleSheet.create({
   },
   btn: {
     borderRadius: 25,
-    height: 40,
+    height: 44,
   }
 })

@@ -1,20 +1,19 @@
 import * as React from 'react';
 import * as Paper from 'react-native-paper';
 import * as RN from 'react-native';
-import { Asset } from 'expo-asset'
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector, shallowEqual } from 'react-redux';
 import _ from 'lodash';
+import * as Linking from 'expo-linking';
 
 import layout from '../../../constants/Layout';
 import PenjualanSection from './PenjualanSection';
 import ProfilSection from './ProfilSection';
 import { RootState } from '../../../redux/rootReducer';
-import { FlatList } from 'react-native-gesture-handler';
 import ProdukList from './ProdukList';
 import ProdukItem from './ProdukItem';
 import { HomeScreenRouteProp, HomeScreenNavigationProp } from '../../../types';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 const dataPenjualan: Array<PenjualanType> | undefined = [
@@ -24,7 +23,6 @@ const dataPenjualan: Array<PenjualanType> | undefined = [
   {id: 3, title: 'Selesai', icon: 'file-document-box-check', color: '#00D8FD'},
   {id: 4, title: 'Dibatalkan', icon: 'file-document-box-remove-outline', color: '#00D8FD'}
 ]
-const dataAction: ActionType = ["Saldo saya", "Penilaian toko", "Jasa kirim saya"];
 
 type Prop = {
   route: HomeScreenRouteProp
@@ -39,12 +37,34 @@ type PenjualanType = {
 type ActionType = Array<string> | undefined
 
 export default function HomeScreen(props : Prop) {
-  const { name, avatar, address, phone } = useSelector(
-    (state: RootState) => state.shop, shallowEqual
-  )
+  const { name, avatar, address, phone } = useSelector((state: RootState) => state.shop, shallowEqual)
   const { colors } = Paper.useTheme();
   const [penjualan, setPenjualan] = React.useState<Array<PenjualanType> | undefined>(dataPenjualan)
-  const [actions, setAction] = React.useState<ActionType | undefined>(dataAction)
+  const PERSISTENCE_KEY = 'NAVIGATION_STATE';
+
+  const [stateFromStrg, setInitialState] = React.useState<any>('');
+  React.useEffect(() => {
+    const restoreState = async () => {
+      try {
+        const initialUrl = Linking.getInitialURL();
+        if (RN.Platform.OS !== 'web' && initialUrl == null) {
+          const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
+          console.log(savedStateString);
+
+          const state = savedStateString ? JSON.parse(savedStateString) : undefined;
+          console.log(savedStateString)
+          console.log(initialUrl);
+
+          if (state !== undefined) {
+            setInitialState(state);
+          }
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    restoreState()
+  }, []);
 
   const _renderHeaderComponent = () => (
     <RN.View>
@@ -56,12 +76,11 @@ export default function HomeScreen(props : Prop) {
           phone: phone
         }}
       />
-
+      <Paper.Text>{stateFromStrg} </Paper.Text>
       <PenjualanSection data={penjualan} />
 
       <Paper.Card style={styles._actions_container}>
         <Paper.Card.Content>
-          {/* {_.map(actions, (item, index) _renderAction(item, index))} */}
           <Paper.Surface style={[styles._action_list, { backgroundColor: colors.background }]}>
             <Paper.List.Item
               style={{borderRadius: 16}}

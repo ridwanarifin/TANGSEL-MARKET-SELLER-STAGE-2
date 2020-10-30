@@ -1,42 +1,34 @@
-import * as React from 'react';
-import { TextInput, KeyboardAvoidingView, findNodeHandle } from 'react-native';
-import { ValidationOptions, FieldError } from 'react-hook-form';
-
+import React, {useRef, useEffect} from 'react';
+import {TextInput} from 'react-native';
 interface ValidationMap {
-  [key: string]: ValidationOptions;
+  [key: string]: any;
 }
-
 interface ErrorMap {
-  [key: string]: FieldError | undefined;
+  [key: string]: object | undefined;
 }
-
 interface Props {
   children: JSX.Element | JSX.Element[];
-  register: (
-    { name }: { name: string },
-    validation?: ValidationOptions
-  ) => void;
+  register: ({name}: {name: string}, validation: any) => void;
   errors: ErrorMap;
   validation: ValidationMap;
-  setValue: (name: string, value: string, validate?: boolean) => void;
+  setValue: (name: string, value: any, config?: Object) => void;
+  clearErrors: (name: string) => void;
 }
-
 export default ({
   register,
   errors,
   setValue,
   validation,
   children,
+  clearErrors,
 }: Props) => {
-  const Inputs = React.useRef<Array<TextInput>>([]);
-
-  React.useEffect(() => {
+  const Inputs = useRef<Array<TextInput>>([]);
+  useEffect(() => {
     (Array.isArray(children) ? [...children] : [children]).forEach((child) => {
       if (child.props.name)
-        register({ name: child.props.name }, validation[child.props.name]);
+        register({name: child.props.name}, validation[child.props.name]);
     });
-  }, [register]);
-
+  }, [register, children, validation]);
   return (
     <>
       {(Array.isArray(children) ? [...children] : [children]).map(
@@ -48,21 +40,22 @@ export default ({
                   ref: (e: TextInput) => {
                     Inputs.current[i] = e;
                   },
-                  onChangeText: (v: string) =>
-                    setValue(child.props.name, v, true),
+                  onChangeText: (v: string) => {
+                    setValue(child.props.name, v, { shouldValidate:  true });
+                    // clearErrors(child.props.name);
+                  },
                   onSubmitEditing: () => {
                     Inputs.current[i + 1]
                       ? Inputs.current[i + 1].focus()
                       : Inputs.current[i].blur();
                   },
-                  //onBlur: () => triggerValidation(child.props.name),
                   blurOnSubmit: false,
-                  //name: child.props.name,
-                  error: errors[child.props.name],
+                  key: child.props.name,
+                  errors: errors[child.props.name],
                 },
               })
             : child;
-        }
+        },
       )}
     </>
   );

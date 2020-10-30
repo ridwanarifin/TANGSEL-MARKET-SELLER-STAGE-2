@@ -14,32 +14,12 @@ import { Platform } from 'react-native';
 import * as React from 'react';
 import * as Paper from 'react-native-paper';
 
-
 import StoreProvider from './providers/StoreProvider';
-import LinkingConfiguration from './navigation/LinkingConfiguration';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Fonts from './constants/Fonts';
 import { RootNavigator } from './navigation';
-
-declare global {
-  namespace ReactNativePaper {
-      interface ThemeFont {
-          fontFamily: string;
-          fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
-      }
-      interface ThemeFonts {
-          regular: ThemeFont;
-          medium: ThemeFont;
-          light: ThemeFont;
-          thin: ThemeFont;
-      }
-      interface ThemeColors {
-          link: string;
-          textLink: string;
-      }
-  }
-}
+import Colors from './constants/Colors';
 
 const CustomPaperDefaultTheme: ReactNativePaper.Theme = {
   ...Paper.DefaultTheme,
@@ -48,6 +28,7 @@ const CustomPaperDefaultTheme: ReactNativePaper.Theme = {
     ...Paper.DefaultTheme.colors,
     link: '#08A0E9',
     textLink: '#3273DC',
+    placeholder: Colors.light.greyLight
   }
 }
 
@@ -58,6 +39,7 @@ const CustomPaperDarkTheme: ReactNativePaper.Theme = {
     ...Paper.DarkTheme.colors,
     link: '#08A0E9',
     textLink: '#3273DC',
+    placeholder: Colors.light.greyLight
   }
 }
 
@@ -67,7 +49,7 @@ const CombineDarkTheme = merge(CustomPaperDarkTheme, NavigationDarkTheme);
 const PERSISTENCE_KEY = 'NAVIGATION_STATE';
 
 export default function index() {
-  // useKeepAwake();
+  useKeepAwake();
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
@@ -83,6 +65,7 @@ export default function index() {
         if (Platform.OS !== 'web' && initialUrl == null) {
           const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
           const state = savedStateString ? JSON.parse(savedStateString) : undefined;
+          console.log(state);
 
           if (state !== undefined) {
             setInitialState(state);
@@ -98,20 +81,16 @@ export default function index() {
     }
   }, [isReady]);
 
-  if (!isReady) {
+  if (!isReady || !isLoadingComplete) {
     return <Paper.ActivityIndicator />;
   }
 
-  if (!isLoadingComplete) {
-    return <Paper.ActivityIndicator />
-  }
-
   return (
-    <Paper.Provider theme={colorScheme === 'dark' ?  CombineDarkTheme : CombineDefaultTheme}>
+    <Paper.Provider theme={CombineDefaultTheme}>
       <StoreProvider>
         <SafeAreaProvider>
           <NavigationContainer
-            theme={colorScheme === 'dark' ?  CombineDarkTheme : CombineDefaultTheme}
+            theme={CombineDefaultTheme}
             initialState={initialState}
             onStateChange={(state) =>
               AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
@@ -119,7 +98,7 @@ export default function index() {
           >
             <RootNavigator />
           </NavigationContainer>
-          <StatusBar hidden></StatusBar>
+          <StatusBar animated></StatusBar>
         </SafeAreaProvider>
       </StoreProvider>
     </Paper.Provider>
