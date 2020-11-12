@@ -47,7 +47,7 @@ export const postLoginMarket = createAsyncThunk(
   'users/loginMarket',
   async (formData: { email: string, password: string }) => {
     try {
-      const response = await axios.post('/api/login-market', qs.stringify(formData))
+      const response = await axios.post('/api/auth/jwt/create', qs.stringify(formData))
       await AsyncStorage.setItem('@auth', JSON.stringify(_.assign(response.data, formData)))
       return response.data
     } catch (error) {

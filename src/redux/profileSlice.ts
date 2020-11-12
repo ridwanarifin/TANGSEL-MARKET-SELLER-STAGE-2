@@ -20,11 +20,10 @@ type ProfileState = {
   name: string
   nik: string
   email: string
-  password: string
+  password?: string
   avatar?: string
   birthday?: string
   gender?: string
-  shop_name: string
   phone: string
   address: string
   created_at?: string
@@ -39,7 +38,6 @@ let initialState: ProfileState = {
   password: 'test123',
   birthday: '30-agustus-2020',
   gender: 'laki-laki',
-  shop_name: 'Tangsel Distro',
   avatar: undefined,
   address: 'Cipadu, Tangerang Selatan',
   phone: '(+62) 12 888 8888',
